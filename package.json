@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/erajakos/sonarqube-csv-exporter/issues"
   },
-  "homepage": "https://github.com/erajakos/sonarqube-csv-exporter#readme",
+  "homepage": "https://github.com/erajakos/sonarqube-csv-exporter#README.md",
   "dependencies": {
     "json2csv": "^4.5.1"
   }
