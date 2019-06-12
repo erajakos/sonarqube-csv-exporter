@@ -23,7 +23,17 @@ fs.readFile(filePath, (err, data) => {
     throw "No issues were found in the json file.";
   }
 
-  const issues = results.issues;
+  const severityRank = ["INFO", "MINOR", "MAJOR", "CRITICAL", "BLOCKER"];
+  const issues = results.issues.sort((a, b) => {
+    const severityA = severityRank.indexOf(a.severity);
+    const severityB = severityRank.indexOf(b.severity);
+
+    if (severityB === severityA) {
+      return a.message.toLowerCase() > b.message.toLowerCase() ? 1 : -1;
+    } else {
+      return severityB > severityA ? 1 : -1;
+    }
+  });
   const groupedIssues = groupIssuesByMessage(issues);
   const resultset = generateResultset(groupedIssues);
 
