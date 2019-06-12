@@ -29,36 +29,37 @@ fs.readFile(filePath, (err, data) => {
     const severityB = severityRank.indexOf(b.severity);
 
     if (severityB === severityA) {
-      return a.message.toLowerCase() > b.message.toLowerCase() ? 1 : -1;
+      return a.rule.toLowerCase() > b.rule.toLowerCase() ? 1 : -1;
     } else {
       return severityB > severityA ? 1 : -1;
     }
   });
-  const groupedIssues = groupIssuesByMessage(issues);
+  const groupedIssues = groupIssuesByRule(issues);
   const resultset = generateResultset(groupedIssues);
 
-  const fields = ["message", "component", "severity"];
+  const fields = ["rule", "exampleMessage", "component", "severity"];
   const json2csvParser = new Parser({ fields });
   const csv = json2csvParser.parse(resultset);
   process.stdout.write(csv);
   process.exit();
 });
 
-function groupIssuesByMessage(issues) {
+function groupIssuesByRule(issues) {
   return issues.reduce((r, a) => {
-    r[a.message] = r[a.message] || [];
-    r[a.message].push(a);
+    r[a.rule] = r[a.rule] || [];
+    r[a.rule].push(a);
     return r;
   }, Object.create(null));
 }
 
 function generateResultset(groupedIssues) {
-  const messages = Object.keys(groupedIssues);
-  const resultset = messages.map(message => {
+  const rules = Object.keys(groupedIssues);
+  const resultset = rules.map(rule => {
     return {
-      message,
-      component: findComponentOccurrences(groupedIssues[message]),
-      severity: groupedIssues[message][0].severity
+      rule,
+      component: findComponentOccurrences(groupedIssues[rule]),
+      severity: groupedIssues[rule][0].severity,
+      exampleMessage: groupedIssues[rule][0].message
     };
   });
   return resultset;

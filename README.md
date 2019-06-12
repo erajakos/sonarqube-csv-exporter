@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This is a NodeJS script that groups all the issues in SonarQube result file (json) based on the message
+This is a NodeJS script that groups all the issues in SonarQube result file (json) based on the rules
 and occurrencies on components.
 
 ## Usage
